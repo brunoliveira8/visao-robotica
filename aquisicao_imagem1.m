@@ -1,4 +1,7 @@
-% function [imagem] = aquisicao_imagem()
+%function [imagem] = aquisicao_imagem1()
+clear all
+close all
+clc
 
 % Importar bibliotecas java
 pasta = [pwd '/lib/']; %Pasta 'lib' deve se encontrar no mesmo diretorio deste arquivo
@@ -27,16 +30,11 @@ configurar_sensor(client_xmlrpc); %Configuracoes do sensor
 fopen(client_socket); %Abre cliente Socket
 
 
-% % % Modo de captura da imagem
+% Modo de captura da imagem
 modo='Z'; %Imagem de distancia. 'D' maiúsculo para sincronizar com a primeira imagem do frame atual do sensor
-n_imgs = 1;
 
-count = 0;
-count1 = 0;
 
-while(count<200) %Utilizado para aquisicao continua da imagem
-
-        
+%while(1) %Utilizado para aquisicao continua da imagem
 client_xmlrpc.execute('MDAXMLHeartbeat', []); %Sinal de heartbeat para manter a conexao com o sensor
 fwrite(client_socket,modo); %Envia ao servidor Socket o modo de imagem. É a funcao responsável por solicitar a imagem.
 
@@ -60,21 +58,18 @@ for j=1:50
         imagem(i,j) = img(k,1); %Aloca a mensagem nos pixels na forma matricial
         k=k+1;
     end
-end 
-
-
-% imshow(imresize(imagem,8),[]);
-
-try
-    ident_obj1(imagem);
-catch 
-    disp('Objeto não identificado.')
 end
 
-pause(0.00001);
-count = count + 1
+%imshow(imagem, []);
+% try
+%     ident_obj1(imagem);
+% catch 
+%     disp('Objeto não identificado.')
+% end
 
-end
+% save('img_Y', 'Y')
+    
 
 fclose(client_socket); %Encerra comunicacao com o Socket
 % encerrar_conexao(client_socket,client_xmlrpc);
+

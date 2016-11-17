@@ -11,8 +11,8 @@ close all
  
  clear S
 
-S = load('img_1_I.mat');
-imagem = cell2mat(S.img_1(1,1));
+S = load('img_2_I.mat');
+imagem = cell2mat(S.img_2_I(1,1));
 clear S
 
 
