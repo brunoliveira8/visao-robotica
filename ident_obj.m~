@@ -3,9 +3,8 @@ close all
 clc
 
 path = 'imagens/imagem-5.mat';
+
 load(path)
-load('img_X.mat');
-load('img_Y.mat');
 
 %Transforma a matriz de profundidade em matriz de intensidade
 I = mat2gray(imagem);
@@ -49,7 +48,7 @@ for l = 1:n_objects
     
     %indicador de circularidade
     %fonte: http://angeljohnsy.blogspot.com/2012/05/find-area-perimeter-centroid.html
-    roundness = (4*area*pi)/(perimeter^2);
+    roundness = (4*area*pi)/(perimeter^2)
     
     if roundness < 0.90
         [R, C] = ind2sub(s, idx);
@@ -66,20 +65,7 @@ stats = regionprops(BW,'Centroid','MajorAxisLength','MinorAxisLength');
 centers = stats.Centroid;
 diameters = stats.MajorAxisLength;
 radii = diameters/2;
-% hold on
-% viscircles(centers,radii);
-% hold off
+hold on
+viscircles(centers,radii);
+hold off
 
-circle = MidpointCircle(zeros(64,50), radii, centers(2), centers(1), 1 );
-
-[xp, yp] = find(circle);
-xc = zeros(1,length(xp));
-yc = zeros(1,length(yp));
-
-for i=1:length(xc)
-    xc(i) = X(xp(i), yp(i));
-    yc(i) = Y(xp(i), yp(i));
-end
-
-save('xc', 'xc');
-save('yc', 'yc');

@@ -1,9 +1,13 @@
 function [] = ident_obj1(imagem)
-    %Transforma a matriz de profundidade em matriz de intensidade
+
+load('img_X.mat');
+load('img_Y.mat');
+
+%Transforma a matriz de profundidade em matriz de intensidade
 I = mat2gray(imagem);
 
-% figure;
-% imshow(I)
+figure;
+imshow(I)
 
 %Inverte a imagem. Preto vira branco e branco vira preto
 I2 = 1-I;
@@ -15,8 +19,8 @@ BW = ~BW;
 
 %Remove pixels pequenos
 BW = bwareaopen(BW, 20);
-% figure;
-% imshow(BW);
+figure;
+imshow(BW);
 
 %Identificado objeto pela forma
 %bwconncomp identifica os objetos
@@ -49,23 +53,29 @@ for l = 1:n_objects
     end
 end
 
-%figure;
+figure;
 imshow(BW)
 
-%Dilatar o robô
-% se = offsetstrel('ball',5,5);
-% dilatedI = imdilate(BW,se);
-% figure
-% imshow(dilatedI)
 
 %Desenhar um circulo involta do desenho
 stats = regionprops(BW,'Centroid','MajorAxisLength','MinorAxisLength');
 centers = stats.Centroid;
-%diameters = mean([stats.MajorAxisLength stats.MinorAxisLength],2);
 diameters = stats.MajorAxisLength;
 radii = diameters/2;
-hold on
-viscircles(centers,radii);
-hold off
+% hold on
+% viscircles(centers,radii);
+% hold off
 
+circle = MidpointCircle(zeros(64,50), radii, centers(2), centers(1), 1 );
+
+[xp, yp] = find(circle);
+xc = zeros(1,length(xp));
+yc = zeros(1,length(yp));
+
+for i=1:length(xc)
+    xc(i) = X(xp(i), yp(i));
+    yc(i) = Y(xp(i), yp(i));
 end
+
+save('xc', 'xc');
+save('yc', 'yc');
