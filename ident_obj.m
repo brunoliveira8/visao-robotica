@@ -71,6 +71,8 @@ radii = diameters/2;
 % hold off
 
 circle = MidpointCircle(zeros(64,50), radii, centers(2), centers(1), 1 );
+figure;
+imshow(circle)
 
 [xp, yp] = find(circle);
 xc = zeros(1,length(xp));
